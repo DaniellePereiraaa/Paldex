@@ -1,8 +1,4 @@
-Claro! Aqui está um README completo no formato do GitHub para o projeto Unity Grid Button Combination:
-
----
-
-# Unity Grid Button Combination
+# Paldex
 
 ![Unity Version](https://img.shields.io/badge/Unity-20XX.XX-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -17,8 +13,7 @@ Este projeto Unity demonstra como criar uma interface de usuário (UI) interativ
 - Interface de usuário (UI) interativa e responsiva.
 
 ## Capturas de Tela
-
-(Inclua capturas de tela do projeto em funcionamento, demonstrando a interface de usuário e as funcionalidades principais.)
+<img src="Assets/screenshots/pal1.PNG" width="200">              <img src="Assets/screenshots/pal2.PNG" width="200">            <img src="Assets/screenshots/pal3.PNG" width="200"> 
 
 ## Requisitos do Sistema
 
