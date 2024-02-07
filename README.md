@@ -59,7 +59,3 @@ Contribuições são bem-vindas! Se você tiver alguma sugestão, correção de 
 ## Licença
 
 Este projeto está licenciado sob a licença [MIT](https://opensource.org/licenses/MIT) - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-Sinta-se à vontade para personalizar o README.md conforme necessário, adicionando mais informações sobre o projeto, instruções de uso mais detalhadas, ou qualquer outra informação relevante para os usuários e contribuidores.
