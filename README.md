@@ -25,7 +25,7 @@ Este projeto Unity demonstra como criar uma interface de usuário (UI) interativ
 1. Clone o repositório para o seu ambiente de desenvolvimento local:
 
 ```
-git clone https://github.com/seu-usuario/unity-grid-button-combination.git
+git clone https://github.com/Luiz-Dalay/Paldex.git
 ```
 
 2. Abra o projeto Unity através do Unity Hub.
