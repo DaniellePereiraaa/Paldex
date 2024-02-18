@@ -67,7 +67,7 @@ public class GridButtonCreator : MonoBehaviour
                 if (buttonComponent != null)
                 {
                     int buttonID = j * QuantX + i + 1; // Calcula o ID do botão
-                    buttonComponent.onClick.AddListener(() => ButtonClicked(buttonID)); // Adiciona um listener de clique para o botão
+                    buttonComponent.onCli       ck.AddListener(() => ButtonClicked(buttonID)); // Adiciona um listener de clique para o botão
 
                     buttonsGrid[i, j] = buttonComponent;
 
@@ -237,5 +237,5 @@ public class AlphanumericComparer : IComparer<string>
 
         // Se uma string for um prefixo da outra, a string mais curta vem primeiro
         return charsX.Length - charsY.Length;
-    }
+    }  
 }

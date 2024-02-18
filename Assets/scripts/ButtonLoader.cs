@@ -3,17 +3,28 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System;
+
 
 public class ButtonLoader : MonoBehaviour
 {
     public Button buttonInScene;
     private int buttonID;
+    // GridButtonCreator2 getIDFromName;
+    private Dictionary<string, int> nameToIDMap;
+    
     string namePal;
     int QuantX = 2;
     Button[,] buttonsGrid; // Matriz de botões
 
+    
     void Start()
     {
+        // Debug.Log("Conteúdo do dicionário idToNameMap em GridButtonCreator2:");
+        // foreach (var kvp in nameToIDMap)
+        // {
+        //     Debug.Log($"ID: {kvp.Key}, Nome: {kvp.Value}");
+        // }
         // Verifica se o PlayerPrefs contém o ID do botão
         if (PlayerPrefs.HasKey("idbutton"))
         {
@@ -42,14 +53,24 @@ public class ButtonLoader : MonoBehaviour
             // Imprime os dados salvos no console
             Debug.Log("Nome do botão salvo: " + namePal);
             Debug.Log("Imagem do botão salva nos dados do jogador.");
+            
+            // List<string> parentNames = GetParentNames(buttonID);
+            // foreach (string parentName in parentNames)
+            // {    
+            //         Debug.Log("IName PARENTS: " + parentName);
 
-            List<string> parentNames = GetParentNames(buttonID);
-            foreach (string parentName in parentNames)
-            {
-                Debug.Log("Parent Name: " + parentName);
-            }
+            //     string[] individualNames = parentName.Split(new string[] { " + " }, StringSplitOptions.None);
+            //     foreach (string name in individualNames)
+            //     { 
+                   
+            //         Debug.Log("Individual Name: " + name);
+            //         int idParent = GetIDFromName(name);
+                    
+            //         Debug.Log("PARENT NAME: " + name + "PARENT ID:" + idParent);
+            //     }
+            // }
 
-            AssignIDsToButtons(parentNames); // Atribui IDs aos botões na grade
+            // AssignIDsToButtons(parentNames); // Atribui IDs aos botões na grade
 
             // Conta as ocorrências do nome na posição de filho
             int quantPais = CountNameOccurrences();
@@ -59,6 +80,11 @@ public class ButtonLoader : MonoBehaviour
             Debug.LogWarning("PlayerPrefs não contém o ID do botão.");
         }
     }
+    public int getButtonId()
+    {
+        return buttonID;
+    }
+
 
     // Função para obter a matriz de botões
     public Button[,] GetButtonsGrid()
@@ -66,7 +92,20 @@ public class ButtonLoader : MonoBehaviour
         return buttonsGrid;
     }
 
-    void AssignIDsToButtons(List<string> parentNames)
+
+     public int GetIDFromName(string parentName)
+        {
+            foreach (var kvp in nameToIDMap)
+            {
+                if (kvp.Key == parentName)
+                {
+                    return kvp.Value;
+                }
+            }
+            return -1; // Retorna -1 se o nome não for encontrado
+        }
+
+   public void AssignIDsToButtons(List<string> parentNames)
     {
         buttonsGrid = new Button[parentNames.Count / QuantX, QuantX]; // Inicializa a matriz de botões
 
@@ -184,7 +223,7 @@ public class ButtonLoader : MonoBehaviour
         }
     }
 
-    List<string> GetParentNames(int buttonID)
+    public List<string> GetParentNames(int buttonID)
     {
         namePal = LoadNameFromJSON(buttonID);
         string filePath = Application.dataPath + "/combinacao.json";
@@ -194,24 +233,27 @@ public class ButtonLoader : MonoBehaviour
             string jsonData = File.ReadAllText(filePath);
             ComboData comboData = JsonUtility.FromJson<ComboData>("{\"combinacoes\":" + jsonData + "}");
 
-            HashSet<string> uniqueParentNames = new HashSet<string>();
+            List<string>ParentNames = new List<string>();
 
             foreach (Combo combo in comboData.combinacoes)
             {
                 if (combo.filho == namePal)
                 {
-                    for (int i = 0; i < combo.posicao_filho.Length - 1; i += 2)
+                    for (int i = 0; i < combo.posicao_filho.Length - 1; i +=1)
                     {
-                        string parentNames = combo.posicao_filho[i] + " + " + combo.posicao_filho[i + 1];
-                        if (!uniqueParentNames.Contains(parentNames))
-                        {
-                            uniqueParentNames.Add(parentNames);
-                        }
+                        string parentNames = combo.posicao_filho[i];// + " + " + combo.posicao_filho[i + 1];
+                            // string parentName = combo.posicao_filho[i];
+                            // Debug.Log("EL PADRE: " + parentName);
+
+                        // if (ParentNames.Contains(parentNames))
+                        // {
+                        ParentNames.Add(parentNames);
+                        // }
                     }
                 }
             }
 
-            return RemoveDuplicatePairs(uniqueParentNames.ToList());
+           return ParentNames.ToList();
         }
         else
         {
