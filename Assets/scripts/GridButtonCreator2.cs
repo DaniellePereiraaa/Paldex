@@ -107,16 +107,3 @@ public class GridButtonCreator2 : MonoBehaviour
         Debug.Log("Button " + buttonID + " clicked!");
     }
 }
-
-[System.Serializable]
-public class ComboData
-{
-    public Combo[] combinacoes;
-}
-
-[System.Serializable]
-public class Combo
-{
-    public string[] posicao_filho;
-    public string filho;
-}
