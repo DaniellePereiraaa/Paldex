@@ -15,9 +15,31 @@ Este projeto Unity demonstra como criar uma interface de usuário (UI) interativ
 ## Capturas de Tela
 <img src="Assets/screenshots/pal1.PNG" width="200">              <img src="Assets/screenshots/pal2.PNG" width="200">            <img src="Assets/screenshots/pal3.PNG" width="200"> 
 
+## Classes presentes no projeto
+- **AlphanumericComparer**: Classe que implementa um comparador alfanumérico para ordenar strings alfanuméricas.  
+- **AuxiliarScrollRectLimiter**: Classe que fornece funcionalidades auxiliares para limitar o deslocamento de um ScrollRect.  
+- **ButtonClickListener**: Classe responsável por lidar com os eventos de clique em botões.  
+- **ButtonData**: Classe de dados que armazena informações sobre um botão, como seu ID, nome e imagem.  
+- **ButtonDisplay**: Classe que controla a exibição de um botão na interface do usuário.  
+- **ButtonLoader**: Classe principal responsável por carregar e configurar botões dinamicamente na cena.  
+- **ButtonReturn**: Classe que define o comportamento de retorno de um botão.  
+- **ButtonSearchFilter**: Classe que implementa um filtro de pesquisa para botões.  
+- **ClickedButtonUI**: Classe que define a interface do usuário de um botão clicado.  
+- **Combo**: Classe que representa uma combinação de itens ou elementos.  
+- **ComboData**: Classe de dados que armazena informações sobre combinações de elementos.  
+- **GridButtonCreator**: Classe responsável por criar e organizar botões em uma grade na interface do usuário.  
+- **GridButtonCreator2**: Classe alternativa ou versão modificada de GridButtonCreator.  
+- **PalWorldIndexData**: Classe de dados que armazena informações sobre índices de elementos em um mundo fictício.  
+- **PalWorldIndexDataList**: Classe que encapsula uma lista de dados de índice de elementos em um mundo fictício.  
+- **ScrollRectLimiter**: Classe que limita o deslocamento de um ScrollRect em uma interface de usuário.  
+- **SimpleJSON**: Biblioteca ou classe que oferece funcionalidades simples para manipulação de dados JSON.  
+- **SimpleScrollView**: Classe que implementa uma visualização de rolagem simples.  
+- **YourButtonScript**: Classe responsável por controlar o comportamento e a interação de um botão específico.  
+- **YourButtonScript2**: Uma versão alternativa ou modificada de YourButtonScript.  
+
 ## Requisitos do Sistema
 
-- Unity 20XX.XX ou superior.
+- Unity 2021.3.6/1 ou superior.
 - Plataforma de desenvolvimento compatível (Windows, macOS, Linux).
 
 ## Instalação
