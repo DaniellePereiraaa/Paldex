@@ -93,17 +93,17 @@ public class ButtonLoader : MonoBehaviour
     }
 
 
-     public int GetIDFromName(string parentName)
-        {
-            foreach (var kvp in nameToIDMap)
-            {
-                if (kvp.Key == parentName)
-                {
-                    return kvp.Value;
-                }
-            }
-            return -1; // Retorna -1 se o nome não for encontrado
-        }
+    //  public int GetIDFromName(string parentName)
+    //     {
+    //         foreach (var kvp in nameToIDMap)
+    //         {
+    //             if (kvp.Key == parentName)
+    //             {
+    //                 return kvp.Value;
+    //             }
+    //         }
+    //         return -1; // Retorna -1 se o nome não for encontrado
+    //     }
 
    public void AssignIDsToButtons(List<string> parentNames)
     {
@@ -222,7 +222,7 @@ public class ButtonLoader : MonoBehaviour
             return 0;
         }
     }
-
+   
     public List<string> GetParentNames(int buttonID)
     {
         namePal = LoadNameFromJSON(buttonID);
@@ -233,27 +233,24 @@ public class ButtonLoader : MonoBehaviour
             string jsonData = File.ReadAllText(filePath);
             ComboData comboData = JsonUtility.FromJson<ComboData>("{\"combinacoes\":" + jsonData + "}");
 
-            List<string>ParentNames = new List<string>();
+            HashSet<string> uniqueParentNames = new HashSet<string>();
 
             foreach (Combo combo in comboData.combinacoes)
             {
                 if (combo.filho == namePal)
                 {
-                    for (int i = 0; i < combo.posicao_filho.Length - 1; i +=1)
+                    for (int i = 0; i < combo.posicao_filho.Length - 1; i += 2)
                     {
-                        string parentNames = combo.posicao_filho[i];// + " + " + combo.posicao_filho[i + 1];
-                            // string parentName = combo.posicao_filho[i];
-                            // Debug.Log("EL PADRE: " + parentName);
-
-                        // if (ParentNames.Contains(parentNames))
-                        // {
-                        ParentNames.Add(parentNames);
-                        // }
+                        string parentNames = combo.posicao_filho[i] + " + " + combo.posicao_filho[i + 1];
+                        if (!uniqueParentNames.Contains(parentNames))
+                        {
+                            uniqueParentNames.Add(parentNames);
+                        }
                     }
                 }
             }
 
-           return ParentNames.ToList();
+            return RemoveDuplicatePairs(uniqueParentNames.ToList());
         }
         else
         {

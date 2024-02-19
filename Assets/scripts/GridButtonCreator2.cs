@@ -24,6 +24,7 @@ public class GridButtonCreator2 : MonoBehaviour
 
     void Start()
     {
+        QuantY = buttonLoader.CountNameOccurrences();
         LoadIDToNameMap();
         List<string> parentNames = buttonLoader.GetParentNames(buttonLoader.getButtonId());
         foreach (string parentName in parentNames)
@@ -35,7 +36,7 @@ public class GridButtonCreator2 : MonoBehaviour
                     {
                         if (kvp.Value == name)
                         parentsNameID[kvp.Value] = kvp.Key;
-                        Debug.Log($"ID: {kvp.Key}, Nome: {kvp.Value}");
+                        Debug.Log($"ID: {kvp.Value}, Nome: {kvp.Key}");
                     }
                     // int idParent = buttonLoader.GetIDFromName(name);
                     
@@ -49,7 +50,6 @@ public class GridButtonCreator2 : MonoBehaviour
         // {
         //     Debug.Log($"ID: {kvp.Key}, Nome: {kvp.Value}");
         // }
-        QuantY = buttonLoader.CountNameOccurrences();
         
         // Inicializa o mapa de ID para nome
             // AssignIDsToButtons(parentNames); 
@@ -123,7 +123,7 @@ public class GridButtonCreator2 : MonoBehaviour
                 }
             }
         }
-        LoadButtonImages2();
+        LoadButtonImages();
     }
     void AssignIDsToButtons(List<string> parentNames){
         buttonsGrid = new Button[parentNames.Count / QuantX, QuantX]; // Inicializa a matriz de botões

@@ -67,7 +67,7 @@ public class GridButtonCreator : MonoBehaviour
                 if (buttonComponent != null)
                 {
                     int buttonID = j * QuantX + i + 1; // Calcula o ID do botão
-                    buttonComponent.onCli       ck.AddListener(() => ButtonClicked(buttonID)); // Adiciona um listener de clique para o botão
+                    buttonComponent.onClick.AddListener(() => ButtonClicked(buttonID)); // Adiciona um listener de clique para o botão
 
                     buttonsGrid[i, j] = buttonComponent;
 
