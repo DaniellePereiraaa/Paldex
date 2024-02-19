@@ -12,6 +12,7 @@ public class ButtonLoader : MonoBehaviour
     int QuantX = 2;
     Button[,] buttonsGrid; // Matriz de botões
     List<string> sequentialParentNames = new List<string>();
+    List<int> sequentialIDs = new List<int>();
 
     void Start()
     {
@@ -45,15 +46,18 @@ public class ButtonLoader : MonoBehaviour
             Debug.Log("Imagem do botão salva nos dados do jogador.");
 
             List<string> parentNames = GetParentNames(buttonID);
-            foreach (string parentName in parentNames)
-            {
-                Debug.Log("Parent Name: " + parentName);
-            }
+            
+           // foreach (string parentName in parentNames)
+           // {
+           //     Debug.Log("Parent Name: " + parentName);
+           // }
 
             AssignIDsToButtons(parentNames); // Atribui IDs aos botões na grade
 
             // Conta as ocorrências do nome na posição de filho
             int quantPais = CountNameOccurrences();
+            AssignIDsToButtonsFromList(sequentialIDs); // Atribui os IDs aos botões na grid
+
         }
         else
         {
@@ -211,12 +215,12 @@ public class ButtonLoader : MonoBehaviour
                     }
                 }
             }
-        List<string> parentNamesWithoutDuplicates = RemoveDuplicatePairs(uniqueParentNames.ToList());
+            List<string> parentNamesWithoutDuplicates = RemoveDuplicatePairs(uniqueParentNames.ToList());
 
-        // Extrair nomes individuais e salvar sequencialmente
-        ExtractAndSaveNames(parentNamesWithoutDuplicates);
+            // Extrair nomes individuais e salvar sequencialmente
+            ExtractAndSaveNames(parentNamesWithoutDuplicates);
 
-        return parentNamesWithoutDuplicates;
+            return parentNamesWithoutDuplicates;
         }
         else
         {
@@ -235,8 +239,46 @@ public class ButtonLoader : MonoBehaviour
         }
         // Debug para verificar a lista de nomes individuais
         Debug.Log("Nomes Individuais: " + string.Join(", ", sequentialParentNames));
-        // Chamando a função para substituir os nomes pelos IDs
-        ReplaceNamesWithIDs();
+        ExtractAndSaveIDs(sequentialParentNames); // Extrai e salva os IDs correspondentes aos nomes
+    }
+
+    void ExtractAndSaveIDs(List<string> sequentialParentNames)
+    {
+        // Carregar dados do arquivo palworld_index.json
+        string filePath = Application.dataPath + "/palworld_index.json";
+
+        if (File.Exists(filePath))
+        {
+            string jsonData = File.ReadAllText(filePath);
+            PalWorldIndexDataList dataList = JsonUtility.FromJson<PalWorldIndexDataList>("{\"list\":" + jsonData + "}");
+
+            // Mapear nomes para IDs
+            Dictionary<string, int> nameToIDMap = new Dictionary<string, int>();
+            foreach (PalWorldIndexData data in dataList.list)
+            {
+                nameToIDMap[data.name] = data.id;
+            }
+
+            // Converter nomes em IDs
+            foreach (string name in sequentialParentNames)
+            {
+                if (nameToIDMap.ContainsKey(name))
+                {
+                    sequentialIDs.Add(nameToIDMap[name]);
+                }
+                else
+                {
+                    Debug.LogError("ID não encontrado para o nome: " + name);
+                }
+            }
+
+            // Debug para testar os IDs obtidos
+            Debug.Log("IDs obtidos: " + string.Join(", ", sequentialIDs));
+        }
+        else
+        {
+            Debug.LogError("Arquivo palworld_index.json não encontrado em: " + filePath);
+        }
     }
 
 
@@ -262,53 +304,54 @@ public class ButtonLoader : MonoBehaviour
         return result;
     }
 
+    //nao funcionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    void AssignIDsToButtonsFromList(List<int> sequentialIDs)
+    {
+        if (sequentialIDs.Count == 0 || buttonsGrid == null)
+        {
+            Debug.LogWarning("A lista de IDs sequenciais está vazia ou a matriz de botões não está inicializada.");
+            return;
+        }
+
+        int index = 0; // Índice para percorrer a lista de IDs sequenciais
+        int maxRows = buttonsGrid.GetLength(QuantX);
+        int maxCols = buttonsGrid.GetLength(10);
+
+        for (int row = 0; row < maxRows; row++)
+        {
+            for (int col = 0; col < maxCols; col++)
+            {
+                if (index < sequentialIDs.Count)
+                {
+                    int id = sequentialIDs[index];
+                    Button button = buttonsGrid[row, col].GetComponent<Button>();
+                    if (button != null)
+                    {
+                        button.name = id.ToString(); // Armazenar o ID como string no campo 'name'
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Botão não encontrado na posição [" + row + ", " + col + "].");
+                    }
+                    index++;
+                }
+                else
+                {
+                    Debug.LogWarning("A lista de IDs sequenciais é menor do que o número de botões na grid.");
+                    return;
+                }
+            }
+        }
+    }
+
+
+
+
+
     void ButtonClicked(int buttonID)
     {
         Debug.Log("Button " + buttonID + " clicked!");
     }
-
-void ReplaceNamesWithIDs()
-{
-    // Carregar dados do arquivo palworld_index.json
-    string filePath = Application.dataPath + "/palworld_index.json";
-
-    if (File.Exists(filePath))
-    {
-        string jsonData = File.ReadAllText(filePath);
-        PalWorldIndexDataList dataList = JsonUtility.FromJson<PalWorldIndexDataList>("{\"list\":" + jsonData + "}");
-
-        // Mapear nomes para IDs
-        Dictionary<string, int> nameToIDMap = new Dictionary<string, int>();
-        foreach (PalWorldIndexData data in dataList.list)
-        {
-            nameToIDMap[data.name] = data.id;
-        }
-
-        // Atribuir IDs aos botões na grid
-        int index = 0;
-        foreach (string sequentialName in sequentialParentNames)
-        {
-            string[] names = sequentialName.Split(new string[] { " + " }, System.StringSplitOptions.None);
-            int id1, id2;
-
-            // Obter IDs correspondentes aos nomes
-            if (nameToIDMap.TryGetValue(names[0], out id1) && nameToIDMap.TryGetValue(names[1], out id2))
-            {
-                // Atribuir IDs aos botões na grid
-                buttonsGrid[index / QuantX, index % QuantX].GetComponent<YourButtonScript2>().AssignIDs(id1, id2);
-                index++; // Incrementar o índice para o próximo botão
-            }
-            else
-            {
-                Debug.LogError("ID não encontrado para um dos nomes na lista sequentialParentNames: " + sequentialName);
-            }
-        }
-    }
-    else
-    {
-        Debug.LogError("Arquivo palworld_index.json não encontrado em: " + filePath);
-    }
-}
 
 
 }
